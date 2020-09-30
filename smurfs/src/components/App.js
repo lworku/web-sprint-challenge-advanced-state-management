@@ -1,46 +1,32 @@
-import React, { Component, useState, useEffect } from "react";
+import { connect } from 'react-redux'
+import React, { Component } from "react";
+import { getSmurfs } from '../actions'
+import SmurfContainer from './SmurfContainer'
+import Form from './Form'
 import "./App.css";
-import axios from 'axios';
 
-//context
-import { SmurfContext } from '../context/smurfcontext';
-
-
-//components
-import SmurfForm from './smurfform';
-import SmurfList from './smurflist';
-
-
-class App extends React.Component {
-
-  constructor() {
-    super();
-    this.state ={
-      smurfs:[],
-    }
+class App extends Component {
+  constructor(props){
+    super(props)
   }
 
   componentDidMount(){
-    axios
-        .get('http://localhost:3333/smurfs')
-        .then((response) => {
-          //console.log(response.data,"response here")
-          const smurfsList = response.data
-          this.setState({smurfs: smurfsList});
-        })
-        .catch((err) => (err));
-    };
-
-  render(){
-
+    console.log("mount")
+    this.props.getSmurfs()
+  }
+  render() {
+    console.log(this.props)
     return (
-      <SmurfContext.Provider value={this.state.smurfs}>
+      <div className="App">
         <h1>¡Bienvenidos a Smurf Village!</h1>
-        <SmurfList />
-        <SmurfForm />
-      </SmurfContext.Provider>
-
+        <Form />
+        <SmurfContainer />
+      </div>
     );
   }
 }
-export default App;
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps, { getSmurfs })(App);
