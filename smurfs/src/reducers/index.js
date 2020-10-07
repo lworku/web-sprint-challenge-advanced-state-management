@@ -29,7 +29,7 @@ export const smurfReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        village: [...state.village, action.payload]
+        village: action.payload,
       }
     default:
       return state
